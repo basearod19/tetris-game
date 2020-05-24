@@ -14,7 +14,7 @@ import timer.TimerEvent;
 class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
 
     // Points distribution per row
-    private static final String TITLE = "Calvin's Tetris";
+    private static final String TITLE = "Calvin's Tetriss";
     private static final int ONE_ROW_CLEARED_POINT = 100;
     private static final int TWO_ROW_CLEARED_POINT = 300;
     private static final int THREE_ROW_CLEARED_POINT = 600;
