@@ -19,7 +19,8 @@ class Board {
         for (int[] aPiece : Piece) {
             for (int c = 0; c < Piece[0].length; c++) {
                 try {
-                    if (boardArray[row][col] != 0 && aPiece[c] != 0) {
+                	boolean canPlace= (boardArray[row][col] == 0 || aPiece[c] == 0);
+                    if (!canPlace) {
                         return 1;
                     } else {
                         if (shouldPlace) {
