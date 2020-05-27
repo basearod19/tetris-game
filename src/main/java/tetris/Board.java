@@ -19,7 +19,8 @@ class Board {
         for (int[] aPiece : Piece) {
             for (int c = 0; c < Piece[0].length; c++) {
                 try {
-                    if (boardArray[row][col] != 0 && aPiece[c] != 0) {
+                	boolean canPlace= (boardArray[row][col] == 0 || aPiece[c] == 0);
+                    if (!canPlace) {
                         return 1;
                     } else {
                         if (shouldPlace) {
@@ -37,7 +38,6 @@ class Board {
         }
         return 0;
     }
-
     boolean isGameOver() {
         for (int i = 0; i < boardArray[0].length; i++) {
             if (boardArray[0][i] != 0) {
