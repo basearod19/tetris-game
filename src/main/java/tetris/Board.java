@@ -51,15 +51,15 @@ class Board {
         int clearedRows = 0;
         int completedLength = 0;
 
-        for (int r = 0; r < boardArray.length; r++) {
-            for (int c = 0; c < boardArray[0].length; c++) {
-                if (boardArray[r][c] != 0) {
+        for (int row = 0; row < boardArray.length; row++) {
+            for (int col = 0; col < boardArray[0].length; col++) {
+                if (boardArray[row][col] != 0) {
                     completedLength++;
                 }
             }
 
             if (completedLength >= boardArray[0].length) {
-                removeLine(r);
+                removeLine(row);
                 clearedRows++;
             }
 

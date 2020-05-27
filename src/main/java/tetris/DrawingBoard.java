@@ -122,11 +122,11 @@ class DrawingBoard extends Canvas {
         rotationDirection = direction;
     }
 
-    public void update(Graphics g) {
-        this.paint(g);
+    public void update(Graphics graphic) {
+        this.paint(graphic);
     }
 
-    public void paint(Graphics g) {
+    public void paint(Graphics graphic) {
         if (offscreen == null) {
             offscreen = createImage(getWidth(), getHeight());
         }
@@ -150,34 +150,34 @@ class DrawingBoard extends Canvas {
         graphics.drawRect(GAMEINFOXLOC, GAMEINFOYLOC, GAMEINFOWIDTH, GAMEINFOHEIGHT);
 
         // current piece
-        int r = PIECE_WIDTH * rowLocation + yOffset;
-        int c = PIECE_WIDTH * columnLocation + xOffset;
+        int currentRow = PIECE_WIDTH * rowLocation + yOffset;
+        int currentColumn = PIECE_WIDTH * columnLocation + xOffset;
 
         for (int[] aPiece : piece) {
             for (int j = 0; j < piece[0].length; j++) {
                 if (aPiece[j] != 0) {
                     graphics.setColor(Block.getColour(aPiece[j]));
-                    graphics.drawRect(c, r, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
+                    graphics.drawRect(currentColumn, currentRow, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
                 }
-                c += PIECE_WIDTH;
+                currentColumn += PIECE_WIDTH;
             }
-            c = PIECE_WIDTH * columnLocation + xOffset;
-            r += PIECE_WIDTH;
+            currentColumn = PIECE_WIDTH * columnLocation + xOffset;
+            currentRow += PIECE_WIDTH;
         }
 
         // let's fill it
-        r = yOffset;
-        c = xOffset;
+        currentRow = yOffset;
+        currentColumn = xOffset;
         for (int[] aBoardArray : boardArray) {
             for (int l = 0; l < boardArray[0].length; l++) {
                 if (aBoardArray[l] != 0) {
                     graphics.setColor(Block.getColour(aBoardArray[l]));
-                    graphics.fillRect(c, r, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
+                    graphics.fillRect(currentColumn, currentRow, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
                 }
-                c += PIECE_WIDTH;
+                currentColumn += PIECE_WIDTH;
             }
-            c = xOffset;
-            r += PIECE_WIDTH;
+            currentColumn = xOffset;
+            currentRow += PIECE_WIDTH;
         }
         graphics.setColor(Color.BLACK);
 
@@ -209,37 +209,37 @@ class DrawingBoard extends Canvas {
         graphics.drawString(String.valueOf(completedRows), ROWSXLOC+20, ROWSYLOC+20);
 
         //score alert
-        if (score >= FIRST_SCORE_BRACKET && !playMusicTracker.get(FIRST_SCORE_BRACKET)) {
+        if (passFirstScoreBracket() && !playMusicTracker.get(FIRST_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/holy_alphabet.wav", false);
             }).start();
             playMusicTracker.put(FIRST_SCORE_BRACKET, true);
-        } else if (score >= SECOND_SCORE_BRACKET && !playMusicTracker.get(SECOND_SCORE_BRACKET)) {
+        } else if (passSecondScoreBracket() && !playMusicTracker.get(SECOND_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/holy_caffeine.wav", false);
             }).start();
             playMusicTracker.put(SECOND_SCORE_BRACKET, true);
-        } else if (score >= THIRD_SCORE_BRACKET && !playMusicTracker.get(THIRD_SCORE_BRACKET)) {
+        } else if (passThirdScoreBracket() && !playMusicTracker.get(THIRD_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/holy_fruit_salad.wav", false);
             }).start();
             playMusicTracker.put(THIRD_SCORE_BRACKET, true);
-        } else if (score >= FOURTH_SCORE_BRACKET && !playMusicTracker.get(FOURTH_SCORE_BRACKET)) {
+        } else if (passFourthScoreBracket() && !playMusicTracker.get(FOURTH_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/holy_heart_failure.wav", false);
             }).start();
             playMusicTracker.put(FOURTH_SCORE_BRACKET, true);
-        } else if (score >= FIFTH_SCORE_BRACKET && !playMusicTracker.get(FIFTH_SCORE_BRACKET)) {
+        } else if (passFifthScoreBracket() && !playMusicTracker.get(FIFTH_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/holy_mashed_potatoes.wav", false);
             }).start();
             playMusicTracker.put(FIFTH_SCORE_BRACKET, true);
-        } else if (score >= SIXTH_SCORE_BRACKET && !playMusicTracker.get(SIXTH_SCORE_BRACKET)) {
+        } else if (passSixthScoreBracket() && !playMusicTracker.get(SIXTH_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/holy_nightmare.wav", false);
             }).start();
             playMusicTracker.put(SIXTH_SCORE_BRACKET, true);
-        } else if (score >= SEVENTH_SCORE_BRACKET && !playMusicTracker.get(SEVENTH_SCORE_BRACKET)) {
+        } else if (passSeventhScoreBracket() && !playMusicTracker.get(SEVENTH_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/bitchin.wav", false);
             }).start();
@@ -247,20 +247,20 @@ class DrawingBoard extends Canvas {
         }
 
         //score board
-        if (score >= SEVENTH_SCORE_BRACKET) {
+        if (passSeventhScoreBracket()) {
             graphics.drawString("Bitchin!", SCOREXLOC, SCOREYLOC);
 
-        } else if (score >= SIXTH_SCORE_BRACKET) {
+        } else if (passSixthScoreBracket()) {
             graphics.drawString("Holy Nightmare!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= FIFTH_SCORE_BRACKET) {
+        } else if (passFifthScoreBracket()) {
             graphics.drawString("Holy Mashed Potato!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= FOURTH_SCORE_BRACKET) {
+        } else if (passFourthScoreBracket()) {
             graphics.drawString("Holy Heart Failure!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= THIRD_SCORE_BRACKET) {
+        } else if (passThirdScoreBracket()) {
             graphics.drawString("Holy Fruit Salad!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= SECOND_SCORE_BRACKET) {
+        } else if (passSecondScoreBracket()) {
             graphics.drawString("Holy Caffeine!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= FIRST_SCORE_BRACKET) {
+        } else if (passFirstScoreBracket()) {
             graphics.drawString("Holy Alphabet!", SCOREXLOC, SCOREYLOC);
         } else {
             graphics.drawString("Score: ", SCOREXLOC, SCOREYLOC);
@@ -295,7 +295,35 @@ class DrawingBoard extends Canvas {
         graphics.dispose();
 
         //draw!
-        g.drawImage(offscreen, 0, 0, this);
+        graphic.drawImage(offscreen, 0, 0, this);
     }
+
+	private boolean passSeventhScoreBracket() {
+		return score >= SEVENTH_SCORE_BRACKET;
+	}
+
+	private boolean passSixthScoreBracket() {
+		return score >= SIXTH_SCORE_BRACKET;
+	}
+
+	private boolean passFifthScoreBracket() {
+		return score >= FIFTH_SCORE_BRACKET;
+	}
+
+	private boolean passFourthScoreBracket() {
+		return score >= FOURTH_SCORE_BRACKET;
+	}
+
+	private boolean passThirdScoreBracket() {
+		return score >= THIRD_SCORE_BRACKET;
+	}
+
+	private boolean passSecondScoreBracket() {
+		return score >= SECOND_SCORE_BRACKET;
+	}
+
+	private boolean passFirstScoreBracket() {
+		return score >= FIRST_SCORE_BRACKET;
+	}
 
 }

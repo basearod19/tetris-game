@@ -94,41 +94,45 @@ class Block {
         int newRowLength = currentBlockState[0].length;
 
         int[][] rotate90Array = new int[newRowLength][newColLength];
-        for (int r = 0; r < newRowLength; r++) {
-            for (int c = 0; c < newColLength; c++) {
-                rotate90Array[r][c] = currentBlockState[newColLength - c - 1][r];
+        for (int row = 0; row < newRowLength; row++) {
+            for (int col = 0; col < newColLength; col++) {
+                rotate90Array[row][col] = currentBlockState[newColLength - col - 1][row];
             }
         }
 
         // when the peice went overboard
-        if (blockColLocation + newColLength > Board.boardWidth) {
-            blockColLocation = Board.boardWidth - newColLength;
-        }
+        checkOverboard(newColLength);
 
-        if (shouldRotate) {
-            currentBlockState = rotate90Array;
-        }
+        shouldRotate(shouldRotate, rotate90Array);
 
         return rotate90Array;
     }
+
+	private void shouldRotate(boolean shouldRotate, int[][] rotate90Array) {
+		if (shouldRotate) {
+            currentBlockState = rotate90Array;
+        }
+	}
+
+	private void checkOverboard(int newColLength) {
+		if (blockColLocation + newColLength > Board.boardWidth) {
+            blockColLocation = Board.boardWidth - newColLength;
+        }
+	}
 
     int[][] rotateLeft(boolean shouldRotate) {
         int newColLength = currentBlockState.length;
         int newRowLength = currentBlockState[0].length;
 
         int[][] rotate270Array = new int[newRowLength][newColLength];
-        for (int r = 0; r < newRowLength; r++) {
-            for (int c = 0; c < newColLength; c++) {
-                rotate270Array[r][c] = currentBlockState[c][newRowLength - r - 1];
+        for (int row = 0; row < newRowLength; row++) {
+            for (int col = 0; col < newColLength; col++) {
+                rotate270Array[row][col] = currentBlockState[col][newRowLength - row - 1];
             }
         }
 
-        if (blockColLocation + newColLength > Board.boardWidth) {
-            blockColLocation = Board.boardWidth - newColLength;
-        }
-        if (shouldRotate) {
-            currentBlockState = rotate270Array;
-        }
+        checkOverboard(newColLength);
+        shouldRotate(shouldRotate, rotate270Array);
 
         return rotate270Array;
     }
@@ -141,13 +145,15 @@ class Block {
     }
 
     void moveRight() {
-        if (blockColLocation + currentBlockState[0].length < Board.boardWidth) {
+    	boolean checkRightLimit = blockColLocation + currentBlockState[0].length < Board.boardWidth;
+        if (checkRightLimit) {
             blockColLocation++;
         }
     }
 
     boolean moveDown() {
-        if (currentBlockState.length + blockRowLocation < Board.boardHeight) {
+      	boolean checkDownLimit = currentBlockState.length + blockRowLocation < Board.boardHeight;
+        if (checkDownLimit) {
             blockRowLocation++;
             return false;
         }
