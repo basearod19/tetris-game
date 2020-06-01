@@ -38,7 +38,6 @@ class Board {
         }
         return 0;
     }
-
     boolean isGameOver() {
         for (int i = 0; i < boardArray[0].length; i++) {
             if (boardArray[0][i] != 0) {
