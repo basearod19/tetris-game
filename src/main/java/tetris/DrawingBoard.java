@@ -114,8 +114,8 @@ class DrawingBoard extends Canvas {
         this.level = level;
     }
 
-    void setSeconds(int secs) {
-        secondsTillNextLevel = secs;
+    void setSeconds(int seconds) {
+        secondsTillNextLevel = seconds;
     }
 
     void setRotationDirection(String direction) {
