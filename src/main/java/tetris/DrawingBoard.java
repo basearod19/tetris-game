@@ -150,34 +150,34 @@ class DrawingBoard extends Canvas {
         graphics.drawRect(GAMEINFOXLOC, GAMEINFOYLOC, GAMEINFOWIDTH, GAMEINFOHEIGHT);
 
         // current piece
-        int r = PIECE_WIDTH * rowLocation + yOffset;
+        int rename = PIECE_WIDTH * rowLocation + yOffset;
         int c = PIECE_WIDTH * columnLocation + xOffset;
 
         for (int[] aPiece : piece) {
             for (int j = 0; j < piece[0].length; j++) {
                 if (aPiece[j] != 0) {
                     graphics.setColor(Block.getColour(aPiece[j]));
-                    graphics.drawRect(c, r, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
+                    graphics.drawRect(c, rename, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
                 }
                 c += PIECE_WIDTH;
             }
             c = PIECE_WIDTH * columnLocation + xOffset;
-            r += PIECE_WIDTH;
+            rename += PIECE_WIDTH;
         }
 
         // let's fill it
-        r = yOffset;
+        rename = yOffset;
         c = xOffset;
         for (int[] aBoardArray : boardArray) {
             for (int l = 0; l < boardArray[0].length; l++) {
                 if (aBoardArray[l] != 0) {
                     graphics.setColor(Block.getColour(aBoardArray[l]));
-                    graphics.fillRect(c, r, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
+                    graphics.fillRect(c, rename, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
                 }
                 c += PIECE_WIDTH;
             }
             c = xOffset;
-            r += PIECE_WIDTH;
+            rename += PIECE_WIDTH;
         }
         graphics.setColor(Color.BLACK);
 
