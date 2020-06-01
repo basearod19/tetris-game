@@ -9,7 +9,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
-
+//test
 class DrawingBoard extends Canvas {
 
     private static final int PIECE_WIDTH = 16;
