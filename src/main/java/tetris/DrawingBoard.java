@@ -155,21 +155,7 @@ class DrawingBoard extends Canvas {
 		currentBlockPosition(graphics);
 
         // let's fill it
-        yPositionBlock = yOffset;
-        xPositionBlock = xOffset;
-        for (int[] aBoardArray : boardArray) {
-            for (int index = 0; index < boardArray[0].length; index++) {
-                if (aBoardArray[index] != 0) {
-                    graphics.setColor(Block.getColour(aBoardArray[index]));
-                    graphics.fillRect(xPositionBlock, yPositionBlock, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
-                }
-                xPositionBlock += PIECE_WIDTH;
-                System.out.println(xPositionBlock);
-            }
-            xPositionBlock = xOffset;
-            yPositionBlock += PIECE_WIDTH;
-            
-        }
+        minMaxXPositionandYPosition(graphics);
         graphics.setColor(Color.BLACK);
 
         //next piece setup
@@ -198,6 +184,26 @@ class DrawingBoard extends Canvas {
         //draw!
         graphic.drawImage(offscreen, 0, 0, this);
     }
+
+	private void minMaxXPositionandYPosition(Graphics graphics) {
+		int yPositionBlock;
+		int xPositionBlock;
+		yPositionBlock = yOffset;
+        xPositionBlock = xOffset;
+        for (int[] aBoardArray : boardArray) {
+            for (int index = 0; index < boardArray[0].length; index++) {
+                if (aBoardArray[index] != 0) {
+                    graphics.setColor(Block.getColour(aBoardArray[index]));
+                    graphics.fillRect(xPositionBlock, yPositionBlock, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
+                }
+                xPositionBlock += PIECE_WIDTH;
+                
+            }
+            xPositionBlock = xOffset;
+            yPositionBlock += PIECE_WIDTH;
+            
+        }
+	}
 
 	private void nextPieceSetUpPosition(Graphics graphics) {
 		int midr = (NPHEIGHT - (nextPiece.length * PIECE_WIDTH)) / 2;
