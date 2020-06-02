@@ -77,20 +77,20 @@ class DrawingBoard extends Canvas {
         playMusicTracker.put(SEVENTH_SCORE_BRACKET, false);
     }
 
-    void setArrayPiece(int[][] arr) {
-        piece = arr;
+    void setArrayPiece(int[][] array) {
+        piece = array;
     }
 
-    void setNextPiece(int[][] arr) {
-        nextPiece = arr;
+    void setNextPiece(int[][] array) {
+        nextPiece = array;
     }
 
-    void setGameOver(boolean go) {
-        drawGameOver = go;
+    void setGameOver(boolean gameOver) {
+        drawGameOver = gameOver;
     }
 
-    void setArrayBoard(int[][] arr) {
-        boardArray = arr;
+    void setArrayBoard(int[][] array) {
+        boardArray = array;
     }
 
     void setPaintLocation(int columnLocation, int rowLocation) {
@@ -114,19 +114,19 @@ class DrawingBoard extends Canvas {
         this.level = level;
     }
 
-    void setSeconds(int secs) {
-        secondsTillNextLevel = secs;
+    void setSeconds(int seconds) {
+        secondsTillNextLevel = seconds;
     }
 
     void setRotationDirection(String direction) {
         rotationDirection = direction;
     }
 
-    public void update(Graphics g) {
-        this.paint(g);
+    public void update(Graphics graphic) {
+        this.paint(graphic);
     }
 
-    public void paint(Graphics g) {
+    public void paint(Graphics graphic) {
         if (offscreen == null) {
             offscreen = createImage(getWidth(), getHeight());
         }
@@ -150,53 +150,54 @@ class DrawingBoard extends Canvas {
         graphics.drawRect(GAMEINFOXLOC, GAMEINFOYLOC, GAMEINFOWIDTH, GAMEINFOHEIGHT);
 
         // current piece
-        int rename = PIECE_WIDTH * rowLocation + yOffset;
-        int c = PIECE_WIDTH * columnLocation + xOffset;
-
+        int yPositionBlock = PIECE_WIDTH * rowLocation + yOffset;
+        int xPositionBlock = PIECE_WIDTH * columnLocation + xOffset;
+        
         for (int[] aPiece : piece) {
-            for (int j = 0; j < piece[0].length; j++) {
-                if (aPiece[j] != 0) {
-                    graphics.setColor(Block.getColour(aPiece[j]));
-                    graphics.drawRect(c, rename, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
+            int widthOfBlock = piece[0].length;
+			for (int length = 0; length < widthOfBlock; length++) {
+                if (aPiece[length] != 0) {
+                    graphics.setColor(Block.getColour(aPiece[length]));
+                    graphics.drawRect(xPositionBlock, yPositionBlock, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
                 }
-                c += PIECE_WIDTH;
+                xPositionBlock += PIECE_WIDTH;
             }
-            c = PIECE_WIDTH * columnLocation + xOffset;
-            rename += PIECE_WIDTH;
+            xPositionBlock = PIECE_WIDTH * columnLocation + xOffset;
+            yPositionBlock += PIECE_WIDTH;     
         }
 
         // let's fill it
-        rename = yOffset;
-        c = xOffset;
+        yPositionBlock = yOffset;
+        xPositionBlock = xOffset;
         for (int[] aBoardArray : boardArray) {
-            for (int l = 0; l < boardArray[0].length; l++) {
-                if (aBoardArray[l] != 0) {
-                    graphics.setColor(Block.getColour(aBoardArray[l]));
-                    graphics.fillRect(c, rename, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
+            for (int index = 0; index < boardArray[0].length; index++) {
+                if (aBoardArray[index] != 0) {
+                    graphics.setColor(Block.getColour(aBoardArray[index]));
+                    graphics.fillRect(xPositionBlock, yPositionBlock, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
                 }
-                c += PIECE_WIDTH;
+                xPositionBlock += PIECE_WIDTH;
             }
-            c = xOffset;
-            rename += PIECE_WIDTH;
+            xPositionBlock = xOffset;
+            yPositionBlock += PIECE_WIDTH;
         }
         graphics.setColor(Color.BLACK);
 
         //next piece setup
         int midr = (NPHEIGHT - (nextPiece.length * PIECE_WIDTH)) / 2;
         int midc = (NPWIDTH - (nextPiece[0].length * PIECE_WIDTH)) / 2;
-        int row = 2 + midr, col = Board.boardWidth * PIECE_WIDTH + xOffset + xOffset + midc;
+        int yPositionSetupBlock = 2 + midr, xPositionSetupBlock = Board.boardWidth * PIECE_WIDTH + xOffset + xOffset + midc;
 
         //draw next piece
         for (int[] aNextPiece : nextPiece) {
-            for (int j = 0; j < nextPiece[0].length; j++) {
-                if (aNextPiece[j] != 0) {
-                    graphics.setColor(Block.getColour(aNextPiece[j]));
-                    graphics.drawRect(col, row, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
+            for (int index = 0; index < nextPiece[0].length; index++) {
+                if (aNextPiece[index] != 0) {
+                    graphics.setColor(Block.getColour(aNextPiece[index]));
+                    graphics.drawRect(xPositionSetupBlock, yPositionSetupBlock, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
                 }
-                col += PIECE_WIDTH;
+                xPositionSetupBlock += PIECE_WIDTH;
             }
-            col = Board.boardWidth * PIECE_WIDTH + 10 + midc;
-            row += PIECE_WIDTH;
+            xPositionSetupBlock = Board.boardWidth * PIECE_WIDTH + 10 + midc;
+            yPositionSetupBlock += PIECE_WIDTH;
         }
 
         //info section
@@ -295,7 +296,7 @@ class DrawingBoard extends Canvas {
         graphics.dispose();
 
         //draw!
-        g.drawImage(offscreen, 0, 0, this);
+        graphic.drawImage(offscreen, 0, 0, this);
     }
 
 }
