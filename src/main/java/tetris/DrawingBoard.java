@@ -150,7 +150,75 @@ class DrawingBoard extends Canvas {
         graphics.drawRect(GAMEINFOXLOC, GAMEINFOYLOC, GAMEINFOWIDTH, GAMEINFOHEIGHT);
 
         // current piece
-        int yPositionBlock = PIECE_WIDTH * rowLocation + yOffset;
+        int yPositionBlock;
+		int xPositionBlock;
+		currentBlockPosition(graphics);
+
+        // let's fill it
+        yPositionBlock = yOffset;
+        xPositionBlock = xOffset;
+        for (int[] aBoardArray : boardArray) {
+            for (int index = 0; index < boardArray[0].length; index++) {
+                if (aBoardArray[index] != 0) {
+                    graphics.setColor(Block.getColour(aBoardArray[index]));
+                    graphics.fillRect(xPositionBlock, yPositionBlock, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
+                }
+                xPositionBlock += PIECE_WIDTH;
+                System.out.println(xPositionBlock);
+            }
+            xPositionBlock = xOffset;
+            yPositionBlock += PIECE_WIDTH;
+            
+        }
+        graphics.setColor(Color.BLACK);
+
+        //next piece setup
+        nextPieceSetUpPosition(graphics);
+
+        //info section
+        graphics.setColor(Color.BLACK);
+        graphics.setFont(new Font("", Font.BOLD, 12));
+        graphics.drawString("Level: " + level, LEVELXLOC, LEVELYLOC);
+        graphics.drawString("Rotation: " + rotationDirection, ROTATIONXLOC, ROTATIONYLOC);
+        graphics.drawString("Next level in: " + secondsTillNextLevel, TIMELEFTXLOC, TIMELEFTYLOC);
+        graphics.drawString("Completed Rows: ", ROWSXLOC, ROWSYLOC);
+        graphics.drawString(String.valueOf(completedRows), ROWSXLOC+20, ROWSYLOC+20);
+
+        alertScore();
+        scoreBoard(graphics);
+        graphics.drawString(String.valueOf(score), SCOREXLOC+20, SCOREYLOC+20);
+        gameOver(graphics);
+
+        graphics.setFont(new Font("", Font.PLAIN, 12));
+        graphics.setColor(Color.BLACK);
+        graphics.drawString("By Calvin Lee", 5, 15);
+
+        graphics.dispose();
+
+        //draw!
+        graphic.drawImage(offscreen, 0, 0, this);
+    }
+
+	private void nextPieceSetUpPosition(Graphics graphics) {
+		int midr = (NPHEIGHT - (nextPiece.length * PIECE_WIDTH)) / 2;
+        int midc = (NPWIDTH - (nextPiece[0].length * PIECE_WIDTH)) / 2;
+        int yPositionSetupBlock = 2 + midr, xPositionSetupBlock = Board.boardWidth * PIECE_WIDTH + xOffset + xOffset + midc;
+
+        for (int[] aNextPiece : nextPiece) {
+            for (int index = 0; index < nextPiece[0].length; index++) {
+                if (aNextPiece[index] != 0) {
+                    graphics.setColor(Block.getColour(aNextPiece[index]));
+                    graphics.drawRect(xPositionSetupBlock, yPositionSetupBlock, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
+                }
+                xPositionSetupBlock += PIECE_WIDTH;
+            }
+            xPositionSetupBlock = Board.boardWidth * PIECE_WIDTH + 10 + midc;
+            yPositionSetupBlock += PIECE_WIDTH;
+        }
+	}
+
+	private void currentBlockPosition(Graphics graphics) {
+		int yPositionBlock = PIECE_WIDTH * rowLocation + yOffset;
         int xPositionBlock = PIECE_WIDTH * columnLocation + xOffset;
         
         for (int[] aPiece : piece) {
@@ -165,52 +233,53 @@ class DrawingBoard extends Canvas {
             xPositionBlock = PIECE_WIDTH * columnLocation + xOffset;
             yPositionBlock += PIECE_WIDTH;     
         }
+	}
 
-        // let's fill it
-        yPositionBlock = yOffset;
-        xPositionBlock = xOffset;
-        for (int[] aBoardArray : boardArray) {
-            for (int index = 0; index < boardArray[0].length; index++) {
-                if (aBoardArray[index] != 0) {
-                    graphics.setColor(Block.getColour(aBoardArray[index]));
-                    graphics.fillRect(xPositionBlock, yPositionBlock, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
-                }
-                xPositionBlock += PIECE_WIDTH;
-            }
-            xPositionBlock = xOffset;
-            yPositionBlock += PIECE_WIDTH;
+	private void scoreBoard(Graphics graphics) {
+		if (score >= SEVENTH_SCORE_BRACKET) {
+            graphics.drawString("Bitchin!", SCOREXLOC, SCOREYLOC);
+
+        } else if (score >= SIXTH_SCORE_BRACKET) {
+            graphics.drawString("Holy Nightmare!", SCOREXLOC, SCOREYLOC);
+        } else if (score >= FIFTH_SCORE_BRACKET) {
+            graphics.drawString("Holy Mashed Potato!", SCOREXLOC, SCOREYLOC);
+        } else if (score >= FOURTH_SCORE_BRACKET) {
+            graphics.drawString("Holy Heart Failure!", SCOREXLOC, SCOREYLOC);
+        } else if (score >= THIRD_SCORE_BRACKET) {
+            graphics.drawString("Holy Fruit Salad!", SCOREXLOC, SCOREYLOC);
+        } else if (score >= SECOND_SCORE_BRACKET) {
+            graphics.drawString("Holy Caffeine!", SCOREXLOC, SCOREYLOC);
+        } else if (score >= FIRST_SCORE_BRACKET) {
+            graphics.drawString("Holy Alphabet!", SCOREXLOC, SCOREYLOC);
+        } else {
+            graphics.drawString("Score: ", SCOREXLOC, SCOREYLOC);
         }
-        graphics.setColor(Color.BLACK);
+	}
 
-        //next piece setup
-        int midr = (NPHEIGHT - (nextPiece.length * PIECE_WIDTH)) / 2;
-        int midc = (NPWIDTH - (nextPiece[0].length * PIECE_WIDTH)) / 2;
-        int yPositionSetupBlock = 2 + midr, xPositionSetupBlock = Board.boardWidth * PIECE_WIDTH + xOffset + xOffset + midc;
-
-        //draw next piece
-        for (int[] aNextPiece : nextPiece) {
-            for (int index = 0; index < nextPiece[0].length; index++) {
-                if (aNextPiece[index] != 0) {
-                    graphics.setColor(Block.getColour(aNextPiece[index]));
-                    graphics.drawRect(xPositionSetupBlock, yPositionSetupBlock, BLOCKDRAWSIZEPIECE, BLOCKDRAWSIZEPIECE);
-                }
-                xPositionSetupBlock += PIECE_WIDTH;
-            }
-            xPositionSetupBlock = Board.boardWidth * PIECE_WIDTH + 10 + midc;
-            yPositionSetupBlock += PIECE_WIDTH;
+	private void gameOver(Graphics graphics) {
+		if (drawPaused) {
+            graphics.setFont(new Font("", Font.BOLD, 16));
+            graphics.setColor(Color.BLUE);
+            graphics.drawString("PAUSED", Board.boardWidth * PIECE_WIDTH + 23, 300);
+            graphics.drawString("Press 'p' ", Board.boardWidth * PIECE_WIDTH + 23, 320);
+            graphics.drawString("to continue", Board.boardWidth * PIECE_WIDTH + 23, 340);
+            graphics.drawString("Press 'x' ", Board.boardWidth * PIECE_WIDTH + 23, 360);
+            graphics.drawString("to restart", Board.boardWidth * PIECE_WIDTH + 23, 380);
+        } else if (drawGameOver) {
+            new Thread(() -> {
+                playMusic("wav/game_over.wav", false);
+            }).start();
+            playMusicTracker.put(FIRST_SCORE_BRACKET, true);
+            graphics.setFont(new Font("", Font.BOLD, 16));
+            graphics.setColor(Color.BLUE);
+            graphics.drawString("GAME OVER!", Board.boardWidth * PIECE_WIDTH + 23, 300);
+            graphics.drawString("Press 'x' ", Board.boardWidth * PIECE_WIDTH + 23, 320);
+            graphics.drawString("to restart", Board.boardWidth * PIECE_WIDTH + 23, 340);
         }
+	}
 
-        //info section
-        graphics.setColor(Color.BLACK);
-        graphics.setFont(new Font("", Font.BOLD, 12));
-        graphics.drawString("Level: " + level, LEVELXLOC, LEVELYLOC);
-        graphics.drawString("Rotation: " + rotationDirection, ROTATIONXLOC, ROTATIONYLOC);
-        graphics.drawString("Next level in: " + secondsTillNextLevel, TIMELEFTXLOC, TIMELEFTYLOC);
-        graphics.drawString("Completed Rows: ", ROWSXLOC, ROWSYLOC);
-        graphics.drawString(String.valueOf(completedRows), ROWSXLOC+20, ROWSYLOC+20);
-
-        //score alert
-        if (score >= FIRST_SCORE_BRACKET && !playMusicTracker.get(FIRST_SCORE_BRACKET)) {
+	private void alertScore() {
+		if (score >= FIRST_SCORE_BRACKET && !playMusicTracker.get(FIRST_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/holy_alphabet.wav", false);
             }).start();
@@ -246,57 +315,6 @@ class DrawingBoard extends Canvas {
             }).start();
             playMusicTracker.put(SEVENTH_SCORE_BRACKET, true);
         }
-
-        //score board
-        if (score >= SEVENTH_SCORE_BRACKET) {
-            graphics.drawString("Bitchin!", SCOREXLOC, SCOREYLOC);
-
-        } else if (score >= SIXTH_SCORE_BRACKET) {
-            graphics.drawString("Holy Nightmare!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= FIFTH_SCORE_BRACKET) {
-            graphics.drawString("Holy Mashed Potato!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= FOURTH_SCORE_BRACKET) {
-            graphics.drawString("Holy Heart Failure!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= THIRD_SCORE_BRACKET) {
-            graphics.drawString("Holy Fruit Salad!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= SECOND_SCORE_BRACKET) {
-            graphics.drawString("Holy Caffeine!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= FIRST_SCORE_BRACKET) {
-            graphics.drawString("Holy Alphabet!", SCOREXLOC, SCOREYLOC);
-        } else {
-            graphics.drawString("Score: ", SCOREXLOC, SCOREYLOC);
-        }
-        graphics.drawString(String.valueOf(score), SCOREXLOC+20, SCOREYLOC+20);
-
-        //game over
-        if (drawPaused) {
-            graphics.setFont(new Font("", Font.BOLD, 16));
-            graphics.setColor(Color.BLUE);
-            graphics.drawString("PAUSED", Board.boardWidth * PIECE_WIDTH + 23, 300);
-            graphics.drawString("Press 'p' ", Board.boardWidth * PIECE_WIDTH + 23, 320);
-            graphics.drawString("to continue", Board.boardWidth * PIECE_WIDTH + 23, 340);
-            graphics.drawString("Press 'x' ", Board.boardWidth * PIECE_WIDTH + 23, 360);
-            graphics.drawString("to restart", Board.boardWidth * PIECE_WIDTH + 23, 380);
-        } else if (drawGameOver) {
-            new Thread(() -> {
-                playMusic("wav/game_over.wav", false);
-            }).start();
-            playMusicTracker.put(FIRST_SCORE_BRACKET, true);
-            graphics.setFont(new Font("", Font.BOLD, 16));
-            graphics.setColor(Color.BLUE);
-            graphics.drawString("GAME OVER!", Board.boardWidth * PIECE_WIDTH + 23, 300);
-            graphics.drawString("Press 'x' ", Board.boardWidth * PIECE_WIDTH + 23, 320);
-            graphics.drawString("to restart", Board.boardWidth * PIECE_WIDTH + 23, 340);
-        }
-
-        graphics.setFont(new Font("", Font.PLAIN, 12));
-        graphics.setColor(Color.BLACK);
-        graphics.drawString("By Calvin Lee", 5, 15);
-
-        graphics.dispose();
-
-        //draw!
-        graphic.drawImage(offscreen, 0, 0, this);
-    }
+	}
 
 }
