@@ -242,7 +242,7 @@ class DrawingBoard extends Canvas {
 	}
 
 	private void scoreBoard(Graphics graphics) {
-		if (score >= SEVENTH_SCORE_BRACKET) {
+		if (exceedSeventh_Score_Bracket()) {
             graphics.drawString("Bitchin!", SCOREXLOC, SCOREYLOC);
 
         } else if (score >= SIXTH_SCORE_BRACKET) {
@@ -260,6 +260,10 @@ class DrawingBoard extends Canvas {
         } else {
             graphics.drawString("Score: ", SCOREXLOC, SCOREYLOC);
         }
+	}
+
+	private boolean exceedSeventh_Score_Bracket() {
+		return score >= SEVENTH_SCORE_BRACKET;
 	}
 
 	private void gameOver(Graphics graphics) {
@@ -315,7 +319,7 @@ class DrawingBoard extends Canvas {
                 playMusic("wav/holy_nightmare.wav", false);
             }).start();
             playMusicTracker.put(SIXTH_SCORE_BRACKET, true);
-        } else if (score >= SEVENTH_SCORE_BRACKET && !playMusicTracker.get(SEVENTH_SCORE_BRACKET)) {
+        } else if (exceedSeventh_Score_Bracket() && !playMusicTracker.get(SEVENTH_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/bitchin.wav", false);
             }).start();
