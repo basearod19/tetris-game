@@ -1,7 +1,6 @@
 package tetris;
 
 import java.awt.Color;
-
 class Block {
 
     static final int BLOCK_LENGTH = 16;
@@ -106,23 +105,18 @@ class Block {
         int newRowLength = currentBlockState[0].length;
 
         int[][] rotateArray = new int[newRowLength][newColLength];
+        
         if(isRight) {
-        	for (int row = 0; row < newRowLength; row++) {
-                for (int col = 0; col < newColLength; col++) {
-                    rotateArray[row][col] = currentBlockState[newColLength - col - 1][row];
-                }
-            }
+        	RotateRight rotate = new RotateRight();
+        	rotate.rotateStart(newColLength, newRowLength, rotateArray, currentBlockState);
         }
         else {
-        	for (int row = 0; row < newRowLength; row++) {
-                for (int col = 0; col < newColLength; col++) {
-                    rotateArray[row][col] = currentBlockState[col][newRowLength - row - 1];
-                }
-            }
+        	RotateLeft rotate = new RotateLeft();
+        	rotate.rotateStart(newRowLength, newColLength, rotateArray, currentBlockState);
         }
         
         checkOverboard(newColLength);
-        shouldRotateLeft(shouldRotate, rotateArray);
+        shouldRotate(shouldRotate, rotateArray);
         return rotateArray;
     }
 
