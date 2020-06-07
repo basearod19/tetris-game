@@ -101,45 +101,32 @@ class Block {
     	}
     }
     
-    
-    //rotator
-    int[][] rotateRight(boolean shouldRotate) {
-        int newColLength = currentBlockState.length;
+    int[][] rotateBlock(boolean shouldRotate, boolean isRight){
+    	int newColLength = currentBlockState.length;
         int newRowLength = currentBlockState[0].length;
 
-        int[][] rotate90Array = new int[newRowLength][newColLength];
-        for (int row = 0; row < newRowLength; row++) {
-            for (int col = 0; col < newColLength; col++) {
-                rotate90Array[row][col] = currentBlockState[newColLength - col - 1][row];
+        int[][] rotateArray = new int[newRowLength][newColLength];
+        if(isRight) {
+        	for (int row = 0; row < newRowLength; row++) {
+                for (int col = 0; col < newColLength; col++) {
+                    rotateArray[row][col] = currentBlockState[newColLength - col - 1][row];
+                }
+            }
+        }
+        else {
+        	for (int row = 0; row < newRowLength; row++) {
+                for (int col = 0; col < newColLength; col++) {
+                    rotateArray[row][col] = currentBlockState[col][newRowLength - row - 1];
+                }
             }
         }
         
         checkOverboard(newColLength);
-        
-        shouldRotate(shouldRotate, rotate90Array);
-
-        return rotate90Array;
+        shouldRotateLeft(shouldRotate, rotateArray);
+        return rotateArray;
     }
 
-    int[][] rotateLeft(boolean shouldRotate) {
-        int newColLength = currentBlockState.length;
-        int newRowLength = currentBlockState[0].length;
-
-        int[][] rotate270Array = new int[newRowLength][newColLength];
-        for (int row = 0; row < newRowLength; row++) {
-            for (int col = 0; col < newColLength; col++) {
-                rotate270Array[row][col] = currentBlockState[col][newRowLength - row - 1];
-            }
-        }
-
-        checkOverboard(newColLength);
-        
-        shouldRotate(shouldRotate, rotate270Array);
-
-        return rotate270Array;
-    }
-
-    //mover s
+    //mover
     void moveLeft() {
         if (blockColLocation > 0) {
             blockColLocation--;
