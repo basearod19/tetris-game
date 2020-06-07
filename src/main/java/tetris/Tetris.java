@@ -28,18 +28,26 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
     private DrawingBoard canvas;                      // canvas to draw stuffs
     private Board b1 = new Board();             // The game board representing where the blocks are
     private boolean paused = false;             // paused?
-    private long totalPoints = 0;               // keep track of points
+    private static long totalPoints = 0;               // keep track of points
     private int rowsCleared = 0;
     private int level = 0;                      // The current level the player is on
     private int dropWait = DROP_INTERVAL;       // The amount of time until the piece drops a row, 600 ms
     private int pressKey = 0;                    // feasible to place piece?
     private char rotateDirection = 'R';
     private CountDown countdown = new timer.CountDown(MINUTE_TILL_NEXT_LVL);
-
+    private KeyLeft keyleft= new KeyLeft();
+    private KeyRight keyright= new KeyRight();
+    private KeyDown keydown = new KeyDown();
+    private KeyUp keyup = new KeyUp();
+    private KeyR keyr = new KeyR();
+    private KeyX keyx = new KeyX();
+    private KeyP keyp = new KeyP();
+    
     Tetris() {
         // Let's register as alarmable to speedup/levelup
         countdown.addTimesUpListener(this);
 
+       
         // Add title to the frame
         this.setTitle(TITLE);
 
@@ -188,7 +196,7 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
         }
     }
 
-    private void drawGame() {
+    void drawGame() {
         canvas.setScore(totalPoints);          // Sets score value
         canvas.setRowsComplete(rowsCleared);   // Sets rows cleared value
         canvas.setNextPiece(nextpieces.getCurrentState());  // Sets the next piece
@@ -198,56 +206,30 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
 
         canvas.repaint(); // PAINT GAME CANVAS AGAIN
     }
-
+    
     public void keyPressed(KeyEvent e) {
     	final boolean NotVK_P = e.getKeyCode() != KeyEvent.VK_P;
     	final boolean NotVK_X = e.getKeyCode() != KeyEvent.VK_X;
     	boolean execPressKey = pressKey != 1;
+    	
         if (paused && NotVK_P && NotVK_X) {
             return;
         }
 
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            new Thread(() -> {
-                playMusic("wav/rotate.wav", false);
-            }).start();
-            pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum() + 1, currentpieces.getColNum(), false);
-            System.out.println(pressKey);
-            if (execPressKey) {
-                totalPoints++;
-                currentpieces.moveDown();
-                drawGame();
-            } else {
-            	piecePlaced();
-            }
+        	keydown.playmusic();
+        	totalPoints++;
+        	keydown.function(currentpieces, nextpieces, canvas, b1, totalPoints);
         } else {
 			if (e.getKeyCode() == KeyEvent.VK_UP) {
-			    new Thread(() -> {
-			        playMusic("wav/rotate.wav", false);
-			    }).start();
+	        	keyup.playmusic();
 			    pressKey = b1.placePiece(currentpieces.rotateRight(false), currentpieces.getRowNum(), currentpieces.getColNum(), false);
-			    if (execPressKey) {
-			        if (rotateDirection == 'R') {
-			            currentpieces.rotateRight(true);
-			            drawGame();
-			        } else {
-			            currentpieces.rotateLeft(true);
-			            drawGame();
-			        }
-			    }
+			    keyup.function(currentpieces, nextpieces, canvas, b1, totalPoints);
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			    new Thread(() -> {
-			        playMusic("wav/rotate.wav", false);
-			    }).start();
-			    pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum(), currentpieces.getColNum() + 1, false);
-			    if (execPressKey) {
-			        currentpieces.moveRight();
-			        drawGame();
-			    }
+				keyright.playmusic();
+				keyright.function(currentpieces, nextpieces, canvas, b1, totalPoints);
 			} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			    new Thread(() -> {
-			        playMusic("wav/rotate.wav", false);
-			    }).start();
+	        	keyleft.playmusic();
 			    pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum(), currentpieces.getColNum() - 1, false);
 			    if (execPressKey) {
 			        currentpieces.moveLeft();
@@ -270,26 +252,15 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
 			    }
 			    drawGame();
 			} else if (e.getKeyCode() == KeyEvent.VK_R) {
-			    new Thread(() -> {
-			        playMusic("wav/rotate.wav", false);
-			    }).start();
-			    if (rotateDirection == 'R') {
-			        rotateDirection = 'L';
-			        canvas.setRotationDirection("Left");
-			    } else {
-			        rotateDirection = 'R';
-			        canvas.setRotationDirection("Right");
-			    }
-			    drawGame();
+				keyr.playmusic();
+				keyr.function(currentpieces, nextpieces, canvas, b1, totalPoints);
 			} else if (!NotVK_P) {
-			    new Thread(() -> {
-			        playMusic("wav/tap.wav", false);
-			    }).start();
-			    pauseGame();
+				keyp.playmusic();
+		        paused = !paused;
+		        canvas.setPaused(paused);
+		        countdown.pause(paused);
 			} else if (!NotVK_X) {
-			    new Thread(() -> {
-			        playMusic("wav/tap.wav", false);
-			    }).start();
+				keyx.playmusic();
 			    restart();
 			}
 		}

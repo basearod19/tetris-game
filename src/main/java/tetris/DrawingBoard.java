@@ -244,22 +244,45 @@ class DrawingBoard extends Canvas {
 	private void scoreBoard(Graphics graphics) {
 		if (exceedSeventh_Score_Bracket()) {
             graphics.drawString("Bitchin!", SCOREXLOC, SCOREYLOC);
-
-        } else if (score >= SIXTH_SCORE_BRACKET) {
+        } else if (exceedSixth_Score_Bracket()) {
             graphics.drawString("Holy Nightmare!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= FIFTH_SCORE_BRACKET) {
+        } else if (exceedFifth_Score_Bracket()) {
             graphics.drawString("Holy Mashed Potato!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= FOURTH_SCORE_BRACKET) {
+        } else if (exceedFourth_Score_Bracket()) {
             graphics.drawString("Holy Heart Failure!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= THIRD_SCORE_BRACKET) {
+        } else if (exceedThird_Score_Bracket()) {
             graphics.drawString("Holy Fruit Salad!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= SECOND_SCORE_BRACKET) {
+        } else if (exceedSecond_Score_Bracket()) {
             graphics.drawString("Holy Caffeine!", SCOREXLOC, SCOREYLOC);
-        } else if (score >= FIRST_SCORE_BRACKET) {
+        } else if (exceedFirst_Score_Bracket()) {
             graphics.drawString("Holy Alphabet!", SCOREXLOC, SCOREYLOC);
         } else {
             graphics.drawString("Score: ", SCOREXLOC, SCOREYLOC);
         }
+	}
+
+	private boolean exceedFirst_Score_Bracket() {
+		return score >= FIRST_SCORE_BRACKET;
+	}
+
+	private boolean exceedSecond_Score_Bracket() {
+		return score >= SECOND_SCORE_BRACKET;
+	}
+
+	private boolean exceedThird_Score_Bracket() {
+		return score >= THIRD_SCORE_BRACKET;
+	}
+
+	private boolean exceedFourth_Score_Bracket() {
+		return score >= FOURTH_SCORE_BRACKET;
+	}
+
+	private boolean exceedFifth_Score_Bracket() {
+		return score >= FIFTH_SCORE_BRACKET;
+	}
+
+	private boolean exceedSixth_Score_Bracket() {
+		return score >= SIXTH_SCORE_BRACKET;
 	}
 
 	private boolean exceedSeventh_Score_Bracket() {
@@ -289,32 +312,32 @@ class DrawingBoard extends Canvas {
 	}
 
 	private void alertScore() {
-		if (score >= FIRST_SCORE_BRACKET && !playMusicTracker.get(FIRST_SCORE_BRACKET)) {
+		if (exceedFirst_Score_Bracket() && !playMusicTracker.get(FIRST_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/holy_alphabet.wav", false);
             }).start();
             playMusicTracker.put(FIRST_SCORE_BRACKET, true);
-        } else if (score >= SECOND_SCORE_BRACKET && !playMusicTracker.get(SECOND_SCORE_BRACKET)) {
+        } else if (exceedSecond_Score_Bracket() && !playMusicTracker.get(SECOND_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/holy_caffeine.wav", false);
             }).start();
             playMusicTracker.put(SECOND_SCORE_BRACKET, true);
-        } else if (score >= THIRD_SCORE_BRACKET && !playMusicTracker.get(THIRD_SCORE_BRACKET)) {
+        } else if (exceedThird_Score_Bracket() && !playMusicTracker.get(THIRD_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/holy_fruit_salad.wav", false);
             }).start();
             playMusicTracker.put(THIRD_SCORE_BRACKET, true);
-        } else if (score >= FOURTH_SCORE_BRACKET && !playMusicTracker.get(FOURTH_SCORE_BRACKET)) {
+        } else if (exceedFourth_Score_Bracket() && !playMusicTracker.get(FOURTH_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/holy_heart_failure.wav", false);
             }).start();
             playMusicTracker.put(FOURTH_SCORE_BRACKET, true);
-        } else if (score >= FIFTH_SCORE_BRACKET && !playMusicTracker.get(FIFTH_SCORE_BRACKET)) {
+        } else if (exceedFifth_Score_Bracket() && !playMusicTracker.get(FIFTH_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/holy_mashed_potatoes.wav", false);
             }).start();
             playMusicTracker.put(FIFTH_SCORE_BRACKET, true);
-        } else if (score >= SIXTH_SCORE_BRACKET && !playMusicTracker.get(SIXTH_SCORE_BRACKET)) {
+        } else if (exceedSixth_Score_Bracket() && !playMusicTracker.get(SIXTH_SCORE_BRACKET)) {
             new Thread(() -> {
                 playMusic("wav/holy_nightmare.wav", false);
             }).start();
