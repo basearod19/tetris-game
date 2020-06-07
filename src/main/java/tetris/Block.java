@@ -5,14 +5,24 @@ import java.awt.Color;
 class Block {
 
     static final int BLOCK_LENGTH = 16;
-
-    private static final int[][] tetrisBlockI = {{1}, {1}, {1}, {1}};
-    private static final int[][] tetrisBlockJ = {{2, 0, 0}, {2, 2, 2}};
-    private static final int[][] tetrisBlockL = {{0, 0, 3}, {3, 3, 3}};
-    private static final int[][] tetrisBlockO = {{4, 4}, {4, 4}};
-    private static final int[][] tetrisBlockS = {{0, 5, 5}, {5, 5, 0}};
-    private static final int[][] tetrisBlockT = {{0, 6, 0}, {6, 6, 6}};
-    private static final int[][] tetrisBlockZ = {{7, 7, 0}, {0, 7, 7}};
+    
+    static BlockFactory blockFactory = new BlockFactory();
+    static Shape tetrisBlock1 = blockFactory.getShape("TetrisBlockI");
+    static Shape tetrisBlock2 = blockFactory.getShape("TetrisBlockJ");
+    static Shape tetrisBlock3 = blockFactory.getShape("TetrisBlockL");
+    static Shape tetrisBlock4 = blockFactory.getShape("TetrisBlockO");
+    static Shape tetrisBlock5 = blockFactory.getShape("TetrisBlockS");
+    static Shape tetrisBlock6 = blockFactory.getShape("TetrisBlockT");
+    static Shape tetrisBlock7 = blockFactory.getShape("TetrisBlockZ");
+    
+    
+    private static final int[][] tetrisBlockI = tetrisBlock1.makeBlock();
+    private static final int[][] tetrisBlockJ = tetrisBlock2.makeBlock();
+    private static final int[][] tetrisBlockL = tetrisBlock3.makeBlock();
+    private static final int[][] tetrisBlockO = tetrisBlock4.makeBlock();
+    private static final int[][] tetrisBlockS = tetrisBlock5.makeBlock();
+    private static final int[][] tetrisBlockT = tetrisBlock6.makeBlock();
+    private static final int[][] tetrisBlockZ = tetrisBlock7.makeBlock();
 
     private int[][] currentBlockState;
 
