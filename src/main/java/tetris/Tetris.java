@@ -65,6 +65,7 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getWidth(), dim.height/2-this.getHeight());
+        
 
         // thread start!
         start();
@@ -199,17 +200,22 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
         canvas.repaint(); // PAINT GAME CANVAS AGAIN
     }
 
+    private void RotateWavFalse() {
+		new Thread(() -> {
+            playMusic("wav/rotate.wav", false);
+        }).start();
+	}
     public void keyPressed(KeyEvent e) {
     	final boolean NotVK_P = e.getKeyCode() != KeyEvent.VK_P;
     	final boolean NotVK_X = e.getKeyCode() != KeyEvent.VK_X;
+    	
+            
         if (paused && NotVK_P && NotVK_X) {
             return;
         }
 
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            new Thread(() -> {
-                playMusic("wav/rotate.wav", false);
-            }).start();
+            RotateWavFalse();
             tempRes = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum() + 1, currentpieces.getColNum(), false);
             if (tempRes == 1) {
                 piecePlaced();
@@ -219,9 +225,7 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
                 drawGame();
             }
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            new Thread(() -> {
-                playMusic("wav/rotate.wav", false);
-            }).start();
+            RotateWavFalse();
             tempRes = b1.placePiece(currentpieces.rotateRight(false), currentpieces.getRowNum(), currentpieces.getColNum(), false);
             if (tempRes != 1) {
                 if (rotateDirection == 'R') {
@@ -233,18 +237,14 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
                 }
             }
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            new Thread(() -> {
-                playMusic("wav/rotate.wav", false);
-            }).start();
+            RotateWavFalse();
             tempRes = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum(), currentpieces.getColNum() + 1, false);
             if (tempRes != 1) {
                 currentpieces.moveRight();
                 drawGame();
             }
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            new Thread(() -> {
-                playMusic("wav/rotate.wav", false);
-            }).start();
+            RotateWavFalse();
             tempRes = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum(), currentpieces.getColNum() - 1, false);
             if (tempRes != 1) {
                 currentpieces.moveLeft();
@@ -267,9 +267,7 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
             }
             drawGame();
         } else if (e.getKeyCode() == KeyEvent.VK_R) {
-            new Thread(() -> {
-                playMusic("wav/rotate.wav", false);
-            }).start();
+            RotateWavFalse();
             if (rotateDirection == 'R') {
                 rotateDirection = 'L';
                 canvas.setRotationDirection("Left");
