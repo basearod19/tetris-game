@@ -202,6 +202,7 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
     public void keyPressed(KeyEvent e) {
     	final boolean NotVK_P = e.getKeyCode() != KeyEvent.VK_P;
     	final boolean NotVK_X = e.getKeyCode() != KeyEvent.VK_X;
+    	boolean execPressKey = pressKey != 1;
         if (paused && NotVK_P && NotVK_X) {
             return;
         }
@@ -211,84 +212,87 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
                 playMusic("wav/rotate.wav", false);
             }).start();
             pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum() + 1, currentpieces.getColNum(), false);
-            if (pressKey == 1) {
-                piecePlaced();
-            } else {
+            System.out.println(pressKey);
+            if (execPressKey) {
                 totalPoints++;
                 currentpieces.moveDown();
                 drawGame();
-            }
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            new Thread(() -> {
-                playMusic("wav/rotate.wav", false);
-            }).start();
-            pressKey = b1.placePiece(currentpieces.rotateRight(false), currentpieces.getRowNum(), currentpieces.getColNum(), false);
-            if (pressKey != 1) {
-                if (rotateDirection == 'R') {
-                    currentpieces.rotateRight(true);
-                    drawGame();
-                } else {
-                    currentpieces.rotateLeft(true);
-                    drawGame();
-                }
-            }
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            new Thread(() -> {
-                playMusic("wav/rotate.wav", false);
-            }).start();
-            pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum(), currentpieces.getColNum() + 1, false);
-            if (pressKey != 1) {
-                currentpieces.moveRight();
-                drawGame();
-            }
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            new Thread(() -> {
-                playMusic("wav/rotate.wav", false);
-            }).start();
-            pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum(), currentpieces.getColNum() - 1, false);
-            if (pressKey != 1) {
-                currentpieces.moveLeft();
-                drawGame();
-            }
-        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            new Thread(() -> {
-                playMusic("wav/drop.wav", false);
-            }).start();
-            boolean movedDown = false;
-            while (!movedDown) {
-                pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum() + 1, currentpieces.getColNum(), false);
-                if (pressKey == 1) {
-                    piecePlaced();
-                    movedDown = true;
-                } else {
-                    totalPoints += 2;
-                    movedDown = currentpieces.moveDown();
-                }
-            }
-            drawGame();
-        } else if (e.getKeyCode() == KeyEvent.VK_R) {
-            new Thread(() -> {
-                playMusic("wav/rotate.wav", false);
-            }).start();
-            if (rotateDirection == 'R') {
-                rotateDirection = 'L';
-                canvas.setRotationDirection("Left");
             } else {
-                rotateDirection = 'R';
-                canvas.setRotationDirection("Right");
+            	piecePlaced();
             }
-            drawGame();
-        } else if (!NotVK_P) {
-            new Thread(() -> {
-                playMusic("wav/tap.wav", false);
-            }).start();
-            pauseGame();
-        } else if (!NotVK_X) {
-            new Thread(() -> {
-                playMusic("wav/tap.wav", false);
-            }).start();
-            restart();
-        }
+        } else {
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+			    new Thread(() -> {
+			        playMusic("wav/rotate.wav", false);
+			    }).start();
+			    pressKey = b1.placePiece(currentpieces.rotateRight(false), currentpieces.getRowNum(), currentpieces.getColNum(), false);
+			    if (execPressKey) {
+			        if (rotateDirection == 'R') {
+			            currentpieces.rotateRight(true);
+			            drawGame();
+			        } else {
+			            currentpieces.rotateLeft(true);
+			            drawGame();
+			        }
+			    }
+			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			    new Thread(() -> {
+			        playMusic("wav/rotate.wav", false);
+			    }).start();
+			    pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum(), currentpieces.getColNum() + 1, false);
+			    if (execPressKey) {
+			        currentpieces.moveRight();
+			        drawGame();
+			    }
+			} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			    new Thread(() -> {
+			        playMusic("wav/rotate.wav", false);
+			    }).start();
+			    pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum(), currentpieces.getColNum() - 1, false);
+			    if (execPressKey) {
+			        currentpieces.moveLeft();
+			        drawGame();
+			    }
+			} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			    new Thread(() -> {
+			        playMusic("wav/drop.wav", false);
+			    }).start();
+			    boolean movedDown = false;
+			    while (!movedDown) {
+			        pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum() + 1, currentpieces.getColNum(), false);
+			        if (pressKey == 1) {
+			            piecePlaced();
+			            movedDown = true;
+			        } else {
+			            totalPoints += 2;
+			            movedDown = currentpieces.moveDown();
+			        }
+			    }
+			    drawGame();
+			} else if (e.getKeyCode() == KeyEvent.VK_R) {
+			    new Thread(() -> {
+			        playMusic("wav/rotate.wav", false);
+			    }).start();
+			    if (rotateDirection == 'R') {
+			        rotateDirection = 'L';
+			        canvas.setRotationDirection("Left");
+			    } else {
+			        rotateDirection = 'R';
+			        canvas.setRotationDirection("Right");
+			    }
+			    drawGame();
+			} else if (!NotVK_P) {
+			    new Thread(() -> {
+			        playMusic("wav/tap.wav", false);
+			    }).start();
+			    pauseGame();
+			} else if (!NotVK_X) {
+			    new Thread(() -> {
+			        playMusic("wav/tap.wav", false);
+			    }).start();
+			    restart();
+			}
+		}
     }
 
     void pauseGame() {
