@@ -32,7 +32,7 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
     private int rowsCleared = 0;
     private int level = 0;                      // The current level the player is on
     private int dropWait = DROP_INTERVAL;       // The amount of time until the piece drops a row, 600 ms
-    private int tempRes = 0;                    // feasible to place piece?
+    private int pressKey = 0;                    // feasible to place piece?
     private char rotateDirection = 'R';
     private CountDown countdown = new timer.CountDown(MINUTE_TILL_NEXT_LVL);
 
@@ -86,9 +86,9 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
                 canvas.setSeconds(Integer.parseInt(countdown.formatAsDate(countdown.getTotalTime()).split(":")[2]));
 
                 // is it possible to place piece?
-                tempRes = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum() + 1, currentpieces.getColNum(), false);
+                pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum() + 1, currentpieces.getColNum(), false);
 
-                if (tempRes == 1) {
+                if (pressKey == 1) {
                     // Not possible, place the piece where it is and we are done
                     piecePlaced();
                 } else {
@@ -210,8 +210,8 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
             new Thread(() -> {
                 playMusic("wav/rotate.wav", false);
             }).start();
-            tempRes = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum() + 1, currentpieces.getColNum(), false);
-            if (tempRes == 1) {
+            pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum() + 1, currentpieces.getColNum(), false);
+            if (pressKey == 1) {
                 piecePlaced();
             } else {
                 totalPoints++;
@@ -222,8 +222,8 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
             new Thread(() -> {
                 playMusic("wav/rotate.wav", false);
             }).start();
-            tempRes = b1.placePiece(currentpieces.rotateRight(false), currentpieces.getRowNum(), currentpieces.getColNum(), false);
-            if (tempRes != 1) {
+            pressKey = b1.placePiece(currentpieces.rotateRight(false), currentpieces.getRowNum(), currentpieces.getColNum(), false);
+            if (pressKey != 1) {
                 if (rotateDirection == 'R') {
                     currentpieces.rotateRight(true);
                     drawGame();
@@ -236,8 +236,8 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
             new Thread(() -> {
                 playMusic("wav/rotate.wav", false);
             }).start();
-            tempRes = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum(), currentpieces.getColNum() + 1, false);
-            if (tempRes != 1) {
+            pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum(), currentpieces.getColNum() + 1, false);
+            if (pressKey != 1) {
                 currentpieces.moveRight();
                 drawGame();
             }
@@ -245,8 +245,8 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
             new Thread(() -> {
                 playMusic("wav/rotate.wav", false);
             }).start();
-            tempRes = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum(), currentpieces.getColNum() - 1, false);
-            if (tempRes != 1) {
+            pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum(), currentpieces.getColNum() - 1, false);
+            if (pressKey != 1) {
                 currentpieces.moveLeft();
                 drawGame();
             }
@@ -256,8 +256,8 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
             }).start();
             boolean movedDown = false;
             while (!movedDown) {
-                tempRes = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum() + 1, currentpieces.getColNum(), false);
-                if (tempRes == 1) {
+                pressKey = b1.placePiece(currentpieces.getCurrentState(), currentpieces.getRowNum() + 1, currentpieces.getColNum(), false);
+                if (pressKey == 1) {
                     piecePlaced();
                     movedDown = true;
                 } else {
