@@ -5,7 +5,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-class PlayMusic {
+public class PlayMusic {
     static void playMusic(String filename, boolean repeat) {
         try {
             ClassLoader classLoader = PlayMusic.class.getClassLoader();

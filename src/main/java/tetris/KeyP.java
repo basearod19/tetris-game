@@ -6,10 +6,9 @@ import timer.CountDown;
 public class KeyP extends KeyPXEvent {
 
 	@Override
-	void function(DrawingBoard canvas, CountDown countdown) {
-		// TODO Auto-generated method stub
-        paused = !paused;
+	void pressKey(boolean paused, DrawingBoard canvas, CountDown countdown) {
         canvas.setPaused(paused);
         countdown.pause(paused);
+        canvas.repaint();
 	}
 }

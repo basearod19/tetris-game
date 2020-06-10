@@ -1,9 +1,9 @@
 package tetris;
 
-public class KeyRight extends KeyLeftRightUpDownEvent {
+public class KeyRight extends KeyLeftRightUpDownREvent {
 
 	@Override
-	void function(Block currentpieces, Block nextpieces, DrawingBoard canvas, Board b1, long totalpoint) {
+	char pressKey(Block currentpieces, Block nextpieces, DrawingBoard canvas, Board b1, long totalpoint, char rotateDirection) {
 		// TODO Auto-generated method stub
 		if(execPressKey) {
 			currentpieces.moveRight();
@@ -14,6 +14,7 @@ public class KeyRight extends KeyLeftRightUpDownEvent {
 	        canvas.setArrayPiece(currentpieces.getCurrentState()); // Sets the current piece
 	        canvas.repaint(); // PAINT GAME CANVAS AGAIN
 		}
+		return rotateDirection;
 	}
 
 }

@@ -4,10 +4,10 @@ import static tetris.PlayMusic.playMusic;
 import tetris.Tetris;
 
 
-public class KeyDown extends KeyLeftRightUpDownEvent{
+public class KeyDown extends KeyLeftRightUpDownREvent{
 
 	@Override
-	void function(Block currentpieces, Block nextpieces, DrawingBoard canvas, Board b1, long totalPoints) {
+	char pressKey(Block currentpieces, Block nextpieces, DrawingBoard canvas, Board b1, long totalPoints, char rotateDirection) {
 		// TODO Auto-generated method stub
 		if(execPressKey) {
 			currentpieces.moveDown();
@@ -19,6 +19,7 @@ public class KeyDown extends KeyLeftRightUpDownEvent{
 	        canvas.setArrayPiece(currentpieces.getCurrentState()); // Sets the current piece
 	        canvas.repaint(); // PAINT GAME CANVAS AGAIN
 		}
+		return rotateDirection;
 	}
 
 }

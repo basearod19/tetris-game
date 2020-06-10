@@ -1,9 +1,9 @@
 package tetris;
 
-public class KeyUp extends KeyLeftRightUpDownEvent{
+public class KeyUp extends KeyLeftRightUpDownREvent{
 
 	@Override
-	void function(Block currentpieces, Block nextpieces, DrawingBoard canvas, Board b1, long totalpoint) {
+	char pressKey(Block currentpieces, Block nextpieces, DrawingBoard canvas, Board b1, long totalPoint, char rotateDirection) {
 		if (execPressKey) {
 	        if (rotateDirection == 'R') {
 	            currentpieces.rotateRight(true);        
@@ -11,6 +11,7 @@ public class KeyUp extends KeyLeftRightUpDownEvent{
 	            currentpieces.rotateLeft(true);
 	        }
 		}
+		return rotateDirection;
 		
 	}
 }

@@ -5,8 +5,6 @@ import static tetris.PlayMusic.playMusic;
 import timer.CountDown;
 
 public abstract class KeyPXEvent {
-	private static final int MINUTE_TILL_NEXT_LVL = 1;
-	protected boolean paused = false;    
 	
 	final void playmusic() {
 	    new Thread(() -> {
@@ -14,6 +12,6 @@ public abstract class KeyPXEvent {
 	    }).start();
 	}
 	
-	abstract void function(DrawingBoard canvas, CountDown countdown);
+	abstract void pressKey(boolean paused, DrawingBoard canvas, CountDown countdown);
 	
 }
