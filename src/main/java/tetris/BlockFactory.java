@@ -2,7 +2,7 @@ package tetris;
 
 public class BlockFactory {
 	
-	public Shape getShape(String blockType) {
+	public static Shape getShape(String blockType) {
 		if(blockType == null) {
 			return null;
 		}

@@ -69,7 +69,7 @@ class Board {
         return clearedRows;
     }
 
-    private void removeLine(int y) {
+    void removeLine(int y) {
         if (y < 0 || y >= boardHeight) {
             return;
         }
