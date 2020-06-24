@@ -15,15 +15,28 @@ public class Tetristest {
     public void setUp() {
         tetris = new Tetris();
     }
+    /*
+     * purpose: get correct width
+     * input tetris window width
+     * expected success
+     */
     @Test
     public void shouldHaveCorrectWidth() {
         assertEquals(Block.BLOCK_LENGTH * Board.boardWidth + 140, tetris.getWidth());
     }
+    /* purpose: get correct height
+    * input tetris window height
+    * expected success
+    */
     @Test
     public void shouldHaveCorrectHeight() {
         assertEquals(Board.boardHeight*Block.BLOCK_LENGTH + 28, tetris.getHeight());
     }
-    
+    /*
+     * purpose : get correct points
+     * input : Rows Cleared Points
+     * expected : success total points
+     */
     @Test
     public void shouldcalculatePoints() {
     	tetris.calculatePoints(0);
@@ -40,7 +53,11 @@ public class Tetristest {
     	assertEquals(expectedvalue + tetris.ONE_ROW_CLEARED_POINT + tetris.TWO_ROW_CLEARED_POINT+
 			     tetris.THREE_ROW_CLEARED_POINT+ tetris.FOUR_ROW_CLEARED_POINT, tetris.totalPoints);
     }
-    
+    /*
+     * purpose : keypressed success
+     * input down, up, right, left, p, x, space
+     * success
+     */
     @Test
     public void shouldKeyPressed() {
     	tetris.restart();
