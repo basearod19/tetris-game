@@ -15,26 +15,27 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
 
     // Points distribution per row
     private static final String TITLE = "Calvin's Tetriss";
-    private static final int ONE_ROW_CLEARED_POINT = 100;
-    private static final int TWO_ROW_CLEARED_POINT = 300;
-    private static final int THREE_ROW_CLEARED_POINT = 600;
-    private static final int FOUR_ROW_CLEARED_POINT = 900;
-    private static final int DROP_INTERVAL = 600;
+    static final int ONE_ROW_CLEARED_POINT = 100;
+    static final int TWO_ROW_CLEARED_POINT = 300;
+    static final int THREE_ROW_CLEARED_POINT = 600;
+    static final int FOUR_ROW_CLEARED_POINT = 900;
+    static final int DROP_INTERVAL = 600;
     private static final int DROP_TIME_REDUCTION = 50; // Gets faster every level in ms
     private static final int MINUTE_TILL_NEXT_LVL = 1;  // Minutes until next level
     private static final String INITIAL_ROTATION = "Right";
     private static boolean gameOver = false;    // Game over?
-    private Block currentpieces, nextpieces;                       // current and next pieces
+    Block currentpieces;                       // current and next pieces
+	private Block nextpieces;
     private DrawingBoard canvas;                      // canvas to draw stuffs
     private Board b1 = new Board();             // The game board representing where the blocks are
-    private boolean paused = false;             // paused?
-    private static long totalPoints = 0;               // keep track of points
+    boolean paused = false;             // paused?
+    static long totalPoints = 0;               // keep track of points
     private int rowsCleared = 0;
     private int level = 0;                      // The current level the player is on
     private int dropWait = DROP_INTERVAL;       // The amount of time until the piece drops a row, 600 ms
     private int pressKey = 0;                    // feasible to place piece?
     private int tempRes = 0;  
-    private char rotateDirection = 'R';
+    char rotateDirection = 'R';
     private CountDown countdown = new timer.CountDown(MINUTE_TILL_NEXT_LVL);
     private KeyLeft keyleft= new KeyLeft();
     private KeyRight keyright= new KeyRight();
@@ -143,7 +144,7 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
         new Thread(this).start();
     }
 
-    private void restart() {
+    void restart() {
         countdown = new timer.CountDown(MINUTE_TILL_NEXT_LVL);
         countdown.addTimesUpListener(this);
         b1 = new Board();
@@ -176,7 +177,7 @@ class Tetris extends JFrame implements Runnable, Alarmable, KeyListener {
         start(); //Gets the game rolling again
     }
 
-    private void calculatePoints(int Rows) {
+    void calculatePoints(int Rows) {
         switch (Rows) {
             case 0:
                 totalPoints += 0;
