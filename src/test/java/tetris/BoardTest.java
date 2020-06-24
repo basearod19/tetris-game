@@ -49,5 +49,14 @@ public class BoardTest {
     public void shouldCalculatePointsOnInitialBoard() {
         assertEquals(0, fixture.calculateRowsCleared());
     }
-
+    
+    @Test
+    public void shouldRemoveLine() {
+    	int y = -1;
+    	fixture.removeLine(y);
+    	y = 25;
+    	fixture.removeLine(y);
+    	y = 5;
+    	fixture.removeLine(y);
+    }
 }
