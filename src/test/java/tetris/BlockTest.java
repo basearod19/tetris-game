@@ -115,14 +115,31 @@ public class BlockTest {
 
     @Test
     public void shouldMoveLeft() {
-        fixture.moveLeft();
-        assertEquals(6, fixture.getColNum());
+    	int x_Position = fixture.getColNum();
+    	while(true) {
+    		fixture.moveLeft();
+    		--x_Position;
+    		assertEquals(x_Position, fixture.getColNum());
+    	}
     }
 
     @Test
     public void shouldMoveRight() {
-        fixture.moveRight();
-        assertEquals(8, fixture.getColNum());
+    	int x_Position = fixture.getColNum();
+    	while(true) {
+    		fixture.moveRight();
+    		++x_Position;
+    		assertEquals(x_Position, fixture.getColNum());
+    	}
+    }
+    @Test
+    public void shouldMoveDown() {
+    	int y_Position = fixture.getRowNum();
+    	while(true) {
+    		fixture.moveDown();
+    		++y_Position;
+    		assertEquals(y_Position, fixture.getRowNum());
+    	}
     }
 
 }
