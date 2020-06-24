@@ -49,7 +49,11 @@ public class BoardTest {
     public void shouldCalculatePointsOnInitialBoard() {
         assertEquals(0, fixture.calculateRowsCleared());
     }
-    
+    /*
+     * purpose 기능이 실행되는지 테스트
+     * input -1, 25, 5
+     * 
+     */
     @Test
     public void shouldRemoveLine() {
     	int y = -1;
