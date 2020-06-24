@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class BlockTest {
+	static BlockFactory blockFactory = new BlockFactory();
     private static final int[][] tetrisBlockI = {{1}, {1}, {1}, {1}};
     private static final int[][] tetrisBlockJ = {{2, 0, 0}, {2, 2, 2}};
     private static final int[][] tetrisBlockL = {{0, 0, 3}, {3, 3, 3}};
@@ -18,6 +19,22 @@ public class BlockTest {
     private static final int[][] tetrisBlockS = {{0, 5, 5}, {5, 5, 0}};
     private static final int[][] tetrisBlockT = {{0, 6, 0}, {6, 6, 6}};
     private static final int[][] tetrisBlockZ = {{7, 7, 0}, {0, 7, 7}};
+    static Shape tetrisBlocki = blockFactory.getShape("TetrisBlockI");
+    static Shape tetrisBlockj = blockFactory.getShape("TetrisBlockJ");
+    static Shape tetrisBlockl = blockFactory.getShape("TetrisBlockL");
+    static Shape tetrisBlocko = blockFactory.getShape("TetrisBlockO");
+    static Shape tetrisBlocks = blockFactory.getShape("TetrisBlockS");
+    static Shape tetrisBlockt = blockFactory.getShape("TetrisBlockT");
+    static Shape tetrisBlockz = blockFactory.getShape("TetrisBlockZ");
+    private static final int[][] tetrisBlockI1 = tetrisBlocki.makeBlock();
+    private static final int[][] tetrisBlockI2 = tetrisBlockj.makeBlock();
+    private static final int[][] tetrisBlockI3 = tetrisBlockl.makeBlock();
+    private static final int[][] tetrisBlockI4 = tetrisBlocko.makeBlock();
+    private static final int[][] tetrisBlockI5 = tetrisBlocks.makeBlock();
+    private static final int[][] tetrisBlockI6 = tetrisBlockt.makeBlock();
+    private static final int[][] tetrisBlockI7 = tetrisBlockz.makeBlock();
+    
+    
     private static final List<String> blocks = Lists.newArrayList(
         Arrays.deepToString(tetrisBlockI),
         Arrays.deepToString(tetrisBlockJ),
@@ -34,7 +51,18 @@ public class BlockTest {
     public void setUp() {
         fixture = new Block(tetrisBlockI);
     }
-
+    
+    @Test
+    public void shouldGetSameBlock() {
+        assertEquals(Arrays.deepToString(tetrisBlockI), Arrays.deepToString(tetrisBlockI1));
+        assertEquals(Arrays.deepToString(tetrisBlockJ), Arrays.deepToString(tetrisBlockI2));
+        assertEquals(Arrays.deepToString(tetrisBlockL), Arrays.deepToString(tetrisBlockI3));
+        assertEquals(Arrays.deepToString(tetrisBlockO), Arrays.deepToString(tetrisBlockI4));
+        assertEquals(Arrays.deepToString(tetrisBlockS), Arrays.deepToString(tetrisBlockI5));
+        assertEquals(Arrays.deepToString(tetrisBlockT), Arrays.deepToString(tetrisBlockI6));
+        assertEquals(Arrays.deepToString(tetrisBlockZ), Arrays.deepToString(tetrisBlockI7));
+    }
+    
     @Test
     public void shouldGetColour() {
         assertEquals(Color.DARK_GRAY, Block.getColour(1));
