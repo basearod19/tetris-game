@@ -112,7 +112,16 @@ public class BlockTest {
         assertEquals(expectedArrayString, Arrays.deepToString(actual));
         assertEquals(expectedArrayString, Arrays.deepToString(fixture.getCurrentState()));
     }
-
+    
+/*
+	purpose : block move in board and move function work correctly
+	input: Left -> x_location (-1 ~6)
+	input : Right -> x_location (8~15)
+	iput : down -> y_location(1~22)
+	expected(1~6) -> ok, -1 -> error
+	expected(8~14) -> ok, 15 -> error
+	exoected(1~21) -> ok, 22 -> error
+*/
     @Test
     public void shouldMoveLeft() {
     	int x_Position = fixture.getColNum();
